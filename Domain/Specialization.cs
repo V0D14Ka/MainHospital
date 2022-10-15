@@ -8,7 +8,7 @@ namespace Domain
 {
     public class Specialization
     {
-        public int SpecId { get; set; }
-        public string SpecName { get; set; }
+        public int SpecID { get; set; }
+        public string Name { get; set; }
     }
 }

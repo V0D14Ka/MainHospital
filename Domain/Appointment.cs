@@ -8,9 +8,9 @@ namespace Domain
 {
     public class Appointment
     {
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
-        public int PatientID { get; set; }
-        public int DoctorID { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public int PatientId { get; set; }
+        public int DoctorId { get; set; }
     }
 }
