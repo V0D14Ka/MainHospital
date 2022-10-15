@@ -4,9 +4,9 @@ namespace Domain
 {
     public class User
     {
-        public int Id { get; set; }
-        public int PhoneNumber { get; set; }
-        public string Name { get; set; }
+        public int ID { get; set; }
+        public int Phone { get; set; }
+        public string FullName { get; set; }
         public Role Role { get; set; }
 
     }

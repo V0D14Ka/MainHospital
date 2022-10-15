@@ -8,9 +8,9 @@ namespace Domain
 {
     public class Shedule
     {
-        public int DoctorID { get; set; }
-        public DateTime StartWork;
-        public DateTime EndWork;
+        public int DoctorId { get; set; }
+        public DateTime StartWorking;
+        public DateTime EndWorking;
 
     }
 }
