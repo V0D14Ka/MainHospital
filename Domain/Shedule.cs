@@ -11,5 +11,6 @@ namespace Domain
         public int DoctorID { get; set; }
         public DateTime StartWork;
         public DateTime EndWork;
+
     }
 }
