@@ -1,6 +1,6 @@
 ﻿using System.Security.Principal;
 
-namespace Domain
+namespace Domain.Models
 {
     public class User
     {
