@@ -12,7 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{0E02E00C-B6C2-4247-8FC3-6CF399EDE98E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{0E02E00C-B6C2-4247-8FC3-6CF399EDE98E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{12C2899A-B702-450A-97E0-2667AB5C0AA1} = {12C2899A-B702-450A-97E0-2667AB5C0AA1}
+		{1C5F8D72-B252-49D1-AED6-513ED8A52345} = {1C5F8D72-B252-49D1-AED6-513ED8A52345}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
