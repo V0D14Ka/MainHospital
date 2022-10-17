@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Domain.Models
 {
-    public class Shedule
+    public class Doctor
     {
         public int DoctorId { get; set; }
-        public DateTime StartWorking;
-        public DateTime EndWorking;
+        public string DoctorName { get; set; }
+        public string DoctorSpecialization { get; set; }
 
     }
 }
