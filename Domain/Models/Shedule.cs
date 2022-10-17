@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,22 @@ namespace Domain.Models
         public DateTime StartWorking;
         public DateTime EndWorking;
 
+        public Shedule() : this(0, new DateTime(), new DateTime()) { }
+
+        public Shedule(int id, DateTime start, DateTime end)
+        {
+            DoctorId = id;
+            StartWorking = start;
+            EndWorking = end;
+        }
+
+
+        public Result IsValid()
+        {
+            if (DoctorId < 0)
+                return Result.Fail("Invalid id");
+
+            return Result.Ok();
+        }
     }
 }

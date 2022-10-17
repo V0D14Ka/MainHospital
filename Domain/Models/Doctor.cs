@@ -14,7 +14,7 @@ namespace Domain.Models
         public string DoctorName { get; set; }
         public string DoctorSpecialization { get; set; }
 
-        public Doctor() : this(0, "", "") { }
+        public Doctor() : this(0, "a", "a") { }
 
         public Doctor(int id, string name, string specialization)
         {
