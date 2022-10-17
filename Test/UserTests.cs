@@ -36,7 +36,7 @@ namespace Test
         }
 
         [Fact]
-        public void AbstractRegiter_ShouldFail()
+        public void AbstractRegister_ShouldFail()
         {
             User user = new User(1, "001", "Ivan", Role.Administrator, "Admin", "123");
             var res = _userService.Register(user);
