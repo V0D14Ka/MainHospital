@@ -8,7 +8,7 @@ namespace Domain.Models
 {
     public enum Role
     {
-        patient,
-        admin
+        Patient,
+        Administator
     }
 }
