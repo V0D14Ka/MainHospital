@@ -27,10 +27,10 @@ namespace Domain.UseCases
         public Result<Appointment> CreateAppointment(User patient, Doctor doctor)
         {
 
-            if (_dbDoctor.IsDoctorExists(doctor) == false)
+            if (_dbDoctor.IsDoctorExist(doctor) == false)
                 return Result.Fail<Appointment>("Doctor is not exist");
             
-            if(_dbUser.IsUserExists(patient) == false)
+            if(_dbUser.IsUserExist(patient) == false)
                 return Result.Fail<Appointment>("Patient is not exist");
 
             if(patient.Role != Role.Patient)
@@ -53,7 +53,7 @@ namespace Domain.UseCases
         public Result<Appointment> CreateAppointment(User patient, Specialization spec)
         {
 
-            if (_dbUser.IsUserExists(patient) == false)
+            if (_dbUser.IsUserExist(patient) == false)
                 return Result.Fail<Appointment>("Patient is not exist");
 
             if (patient.Role != Role.Patient)

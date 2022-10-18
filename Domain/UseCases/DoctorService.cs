@@ -23,7 +23,7 @@ namespace Domain.UseCases
             if (result.IsFailure)
                 return Result.Fail<Doctor>("Invalid doctor: " + result.Error);
 
-            if (_db.IsDoctorExists(doctor.Id))
+            if (_db.IsDoctorExist(doctor.Id))
                 return Result.Fail<Doctor>("Doctor is already exists");
 
             return _db.CreateDoctor(doctor) ? Result.Ok(doctor) : Result.Fail<Doctor>("Unable to create doctor");
@@ -31,7 +31,7 @@ namespace Domain.UseCases
 
         public Result<Doctor> DeleteDoctor(Doctor doctor)
         {
-            if (_db.IsDoctorExists(doctor.Id))
+            if (_db.IsDoctorExist(doctor.Id))
                 return _db.DeleteDoctor(doctor) ? Result.Ok(doctor) : Result.Fail<Doctor>("Unable to delete doctor");
 
             return Result.Fail<Doctor>("Unable to delete doctor");

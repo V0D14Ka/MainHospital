@@ -9,8 +9,8 @@ namespace Domain.Logic
 {
     public interface IDoctorRepository : IRepository<Doctor>
     {
-        bool IsDoctorExists(int id);
-        bool IsDoctorExists(Doctor doctor);
+        bool IsDoctorExist(int id);
+        bool IsDoctorExist(Doctor doctor);
         bool CreateDoctor(Doctor doctor);
         bool DeleteDoctor(Doctor doctor);
         Doctor GetDoctorById(int id);

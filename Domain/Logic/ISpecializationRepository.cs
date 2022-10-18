@@ -9,8 +9,8 @@ namespace Domain.Logic
 {
     public interface ISpecializationRepository : IRepository<Specialization>
     {
-        bool IsSpecializationExists(string name);
-        bool IsSpecializationExistsById(int id);
+        bool IsSpecializationExist(string name);
+        bool IsSpecializationExistById(int id);
         Specialization? GetSpecialization(string name);
         bool IsSpecializationExists(Specialization spec);
         IEnumerable<Specialization> GetAllSpecializations();

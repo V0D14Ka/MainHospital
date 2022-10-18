@@ -28,7 +28,7 @@ namespace Test
         [Fact]
         public void DoctorIsNotExist_ShouldFail()
         {
-            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<Doctor>()))
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExist(It.IsAny<Doctor>()))
                 .Returns(() => false);
 
             var res = _appointmentService.CreateAppointment(new User(), new Doctor());
@@ -40,10 +40,10 @@ namespace Test
         [Fact]
         public void UserIsNotExist_ShouldFail()
         {
-            _userRepositoryMock.Setup(repository => repository.IsUserExists(It.IsAny<User>()))
+            _userRepositoryMock.Setup(repository => repository.IsUserExist(It.IsAny<User>()))
                 .Returns(() => false);
 
-            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<Doctor>()))
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExist(It.IsAny<Doctor>()))
                 .Returns(() => true);
 
             var res = _appointmentService.CreateAppointment(new User(), new Doctor());
@@ -55,10 +55,10 @@ namespace Test
         [Fact]
         public void UserIsNotPatient_ShouldFail()
         {
-            _userRepositoryMock.Setup(repository => repository.IsUserExists(It.IsAny<User>()))
+            _userRepositoryMock.Setup(repository => repository.IsUserExist(It.IsAny<User>()))
                 .Returns(() => true);
 
-            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<Doctor>()))
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExist(It.IsAny<Doctor>()))
                 .Returns(() => true);
 
             var res = _appointmentService.CreateAppointment(new User() { Role = Role.Administrator}, new Doctor());
@@ -80,10 +80,10 @@ namespace Test
             };
             IEnumerable<Appointment> en = list;
 
-            _userRepositoryMock.Setup(repository => repository.IsUserExists(It.IsAny<User>()))
+            _userRepositoryMock.Setup(repository => repository.IsUserExist(It.IsAny<User>()))
                 .Returns(() => true);
 
-            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<Doctor>()))
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExist(It.IsAny<Doctor>()))
                 .Returns(() => true);
 
             _appointmentRepositoryMock.Setup(repository => repository.IsAppointmentExist(It.IsAny<Appointment>()))
@@ -105,10 +105,10 @@ namespace Test
             list.Add(new Appointment());
             IEnumerable<Appointment> en = list;
 
-            _userRepositoryMock.Setup(repository => repository.IsUserExists(It.IsAny<User>()))
+            _userRepositoryMock.Setup(repository => repository.IsUserExist(It.IsAny<User>()))
                 .Returns(() => true);
 
-            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<Doctor>()))
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExist(It.IsAny<Doctor>()))
                 .Returns(() => true);
 
             _appointmentRepositoryMock.Setup(repository => repository.IsAppointmentExist(It.IsAny<Appointment>()))
@@ -136,10 +136,10 @@ namespace Test
             };
             IEnumerable<Appointment> en = list;
 
-            _userRepositoryMock.Setup(repository => repository.IsUserExists(It.IsAny<User>()))
+            _userRepositoryMock.Setup(repository => repository.IsUserExist(It.IsAny<User>()))
                 .Returns(() => true);
 
-            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<Doctor>()))
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExist(It.IsAny<Doctor>()))
                 .Returns(() => true);
 
             _appointmentRepositoryMock.Setup(repository => repository.IsAppointmentExist(It.IsAny<Appointment>()))

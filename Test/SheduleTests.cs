@@ -64,7 +64,7 @@ namespace Test
             DateTime date = new();
             _sheduleRepositoryMock.Setup(repository => repository.GetSheduleByDoctorAndDate(It.IsAny<Doctor>(), It.IsAny<DateTime>()))
                 .Returns(() => null);
-            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<int>()))
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExist(It.IsAny<int>()))
                 .Returns(() => true);
             var res = _sheduleService.GetSheduleByDoctorAndDate(doctor,date);
 
@@ -79,7 +79,7 @@ namespace Test
             DateTime date = new();
             _sheduleRepositoryMock.Setup(repository => repository.GetSheduleByDoctorAndDate(It.IsAny<Doctor>(), It.IsAny<DateTime>()))
                 .Returns(() => null);
-            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<int>()))
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExist(It.IsAny<int>()))
                 .Returns(() => false);
             var res = _sheduleService.GetSheduleByDoctorAndDate(doctor, date);
 
