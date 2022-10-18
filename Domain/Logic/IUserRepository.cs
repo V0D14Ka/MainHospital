@@ -11,6 +11,8 @@ namespace Domain.Logic
     {
         bool IsUserExists(string login);
         User? GetUserByLogin(string login);
+        User? GetUserByID(int id);
+        bool IsUserExistByID(int id);
         bool CreateUser(User user);
     }
 }
