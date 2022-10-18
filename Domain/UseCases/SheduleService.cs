@@ -39,7 +39,7 @@ namespace Domain.UseCases
 
         public Result<Shedule> GetSheduleByDoctorAndDate(Doctor doc, DateTime date)
         {
-            if (!_dbDoctor.IsDoctorExists(doc.DoctorName))
+            if (!_dbDoctor.IsDoctorExists(doc.Id))
                 return Result.Fail<Shedule>("Doctor is not exist");
             var shed = _db.GetSheduleByDoctorAndDate(doc,date);
 

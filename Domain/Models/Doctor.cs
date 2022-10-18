@@ -10,30 +10,27 @@ namespace Domain.Models
 {
     public class Doctor
     {
-        public int DoctorId { get; set; }
-        public string DoctorName { get; set; }
-        public string DoctorSpecialization { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public Specialization Specialization { get; set; }
 
-        public Doctor() : this(0, "", "") { }
+        public Doctor() : this(0, "", new Specialization()) { }
 
-        public Doctor(int id, string name, string specialization)
+        public Doctor(int id, string name, Specialization specialization)
         {
-            DoctorId = id;
-            DoctorName = name;
-            DoctorSpecialization = specialization;
+            Id = id;
+            Name = name;
+            Specialization = specialization;
         }
 
 
         public Result IsValid()
         {
-            if (DoctorId < 0)
+            if (Id < 0)
                 return Result.Fail("Invalid id");
 
-            if (string.IsNullOrEmpty(DoctorName))
+            if (string.IsNullOrEmpty(Name))
                 return Result.Fail("Invalid doctor name");
-
-            if (string.IsNullOrEmpty(DoctorSpecialization))
-                return Result.Fail("Invalid specialization");
 
             return Result.Ok();
         }

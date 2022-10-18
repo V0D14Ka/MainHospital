@@ -25,7 +25,7 @@ namespace Test
         [Fact]
         public void AbstractCreate_ShouldFail()
         {
-            Doctor doctor = new Doctor(1, "Ivan", "Dantist");
+            Doctor doctor = new Doctor(1, "Ivan", new Specialization());
             var res = _doctorService.CreateDoctor(doctor);
 
             Assert.True(res.IsFailure);
@@ -34,7 +34,7 @@ namespace Test
         [Fact]
         public void AbstractDelete_ShouldFail()
         {
-            Doctor doctor = new Doctor(1, "Ivan", "Dantist");
+            Doctor doctor = new Doctor(1, "Ivan", new Specialization());
             var res = _doctorService.DeleteDoctor(doctor);
 
             Assert.True(res.IsFailure);
@@ -43,7 +43,7 @@ namespace Test
         [Fact]
         public void IdIsEmptyOrNull_ShouldFail()
         {
-            var res = _doctorService.GetDoctorByID(string.Empty);
+            var res = _doctorService.GetDoctorByID(-1);
 
             Assert.True(res.IsFailure);
             Assert.Equal("Invalid id", res.Error);

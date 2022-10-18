@@ -20,13 +20,13 @@ namespace Test
         }
 
         [Fact]
-        public void AbstractCreate_ShouldFail()
+        public void InvalidTimeCreate_ShouldFail()
         {
             Shedule shedule = new Shedule();
             var res = _sheduleService.CreateShedule(shedule);
 
             Assert.True(res.IsFailure);
-            Assert.Equal("Unable to create shedule", res.Error);
+            Assert.Equal("Invalid shedule: Invalid time", res.Error);
         }
         [Fact]
         public void InvalidNewSheduleUpdate_ShouldFail()
@@ -46,7 +46,11 @@ namespace Test
         public void AbstractUpdate_ShouldFail()
         {
             Shedule shedule = new();
-            Shedule updatedshedule = new();
+            Shedule updatedshedule = new()
+            {
+                StartWorking = new DateTime(2000, 5, 1),
+                EndWorking = new DateTime(2001,5,1)
+            };
             var res = _sheduleService.UpdateShedule(shedule, updatedshedule);
 
             Assert.True(res.IsFailure);
@@ -60,7 +64,7 @@ namespace Test
             DateTime date = new();
             _sheduleRepositoryMock.Setup(repository => repository.GetSheduleByDoctorAndDate(It.IsAny<Doctor>(), It.IsAny<DateTime>()))
                 .Returns(() => null);
-            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<string>()))
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<int>()))
                 .Returns(() => true);
             var res = _sheduleService.GetSheduleByDoctorAndDate(doctor,date);
 
@@ -75,7 +79,7 @@ namespace Test
             DateTime date = new();
             _sheduleRepositoryMock.Setup(repository => repository.GetSheduleByDoctorAndDate(It.IsAny<Doctor>(), It.IsAny<DateTime>()))
                 .Returns(() => null);
-            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<string>()))
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<int>()))
                 .Returns(() => false);
             var res = _sheduleService.GetSheduleByDoctorAndDate(doctor, date);
 

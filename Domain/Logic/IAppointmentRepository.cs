@@ -10,8 +10,8 @@ namespace Domain.Logic
     public interface IAppointmentRepository : IRepository<Appointment>
     {
         bool MakeNote(Appointment appoint);
-        IEnumerable<Appointment> GetActualDates(string specialization);
-        IEnumerable<Appointment> GetActualDatesByDoctorID(int doctorId);
+        IEnumerable<Appointment> GetActualDates(Specialization spec);
+        IEnumerable<Appointment> GetActualDates(Doctor doctor);
         bool IsAppointmentExist(Appointment appointment);
     }
 }

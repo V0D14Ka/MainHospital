@@ -33,6 +33,9 @@ namespace Domain.Models
             if (PatientId < 0)
                 return Result.Fail("Invalid patient id");
 
+            if(StartTime >= EndTime)
+                return Result.Fail("Invalid time");
+
             return Result.Ok();
         }
     }

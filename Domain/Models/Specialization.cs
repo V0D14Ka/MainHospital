@@ -9,21 +9,21 @@ namespace Domain.Models
 {
     public class Specialization
     {
-        public int SpecID { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
 
         public Specialization() : this(0, "") { }
 
         public Specialization(int id, string name) 
         { 
-            SpecID = id; 
+            Id = id; 
             Name = name; 
         }
 
 
         public Result IsValid()
         {
-            if (SpecID < 0)
+            if (Id < 0)
                 return Result.Fail("Invalid id");
 
             if (string.IsNullOrEmpty(Name))

@@ -12,7 +12,7 @@ namespace Domain.Logic
         bool IsSpecializationExists(string name);
         bool IsSpecializationExistsById(int id);
         Specialization? GetSpecialization(string name);
-        Specialization? GetSpecializationById(int id);
+        bool IsSpecializationExists(Specialization spec);
         IEnumerable<Specialization> GetAllSpecializations();
     }
 }

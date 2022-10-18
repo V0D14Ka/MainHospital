@@ -24,25 +24,20 @@ namespace Domain.UseCases
             _dbSpec = dbSpec;
         }
 
-        public Result<Appointment> CreateAppointment(int patientId, int doctorId = -1, string specialization = "-")
+        public Result<Appointment> CreateAppointment(User patient, Doctor doctor)
         {
-            if(doctorId == -1 && specialization == "-" || doctorId != -1 && specialization != "-")
-                return Result.Fail<Appointment>("Need to give one parametr: doctorId or specialization");
 
-            if (doctorId != -1 && _dbDoctor.GetDoctorById(doctorId) == null)
+            if (_dbDoctor.IsDoctorExists(doctor) == false)
                 return Result.Fail<Appointment>("Doctor is not exist");
             
-            if(_dbUser.IsUserExistByID(patientId) == false)
+            if(_dbUser.IsUserExists(patient) == false)
                 return Result.Fail<Appointment>("Patient is not exist");
 
-            if(_dbUser.GetUserByID(patientId).Role != Role.Patient)
+            if(patient.Role != Role.Patient)
                 return Result.Fail<Appointment>("User is not a patient");
 
-            if(specialization != "-" && _dbSpec.IsSpecializationExists(specialization) == false)
-                return Result.Fail<Appointment>("Specialization is not exist");
-
-            var date = (doctorId == -1 ? _db.GetActualDates(specialization).First<Appointment>() : _db.GetActualDatesByDoctorID(doctorId).First<Appointment>());
-            date.PatientId = patientId;
+            var date = _db.GetActualDates(doctor).First<Appointment>();
+            date.PatientId = patient.Id;
             
             if (date.IsValid().IsFailure)
             {
@@ -55,9 +50,35 @@ namespace Domain.UseCases
             return _db.MakeNote(date) ? Result.Ok(date) : Result.Fail<Appointment>("Unable to create appointment");
         }
 
-        public Result<IEnumerable<Appointment>> GetActualDates(string specialization)
+        public Result<Appointment> CreateAppointment(User patient, Specialization spec)
         {
-            return Result.Ok(_db.GetActualDates(specialization));
+
+            if (_dbUser.IsUserExists(patient) == false)
+                return Result.Fail<Appointment>("Patient is not exist");
+
+            if (patient.Role != Role.Patient)
+                return Result.Fail<Appointment>("User is not a patient");
+
+            if (_dbSpec.IsSpecializationExists(spec) == false)
+                return Result.Fail<Appointment>("Specialization is not exist");
+
+            var date = _db.GetActualDates(spec).First<Appointment>();
+            date.PatientId = patient.Id;
+
+            if (date.IsValid().IsFailure)
+            {
+                return Result.Fail<Appointment>("Invalid appointment: " + date.IsValid().Error);
+            }
+
+            if (_db.IsAppointmentExist(date))
+                return Result.Fail<Appointment>("Appointment is already exists");
+
+            return _db.MakeNote(date) ? Result.Ok(date) : Result.Fail<Appointment>("Unable to create appointment");
+        }
+
+        public Result<IEnumerable<Appointment>> GetActualDates(Specialization spec)
+        {
+            return Result.Ok(_db.GetActualDates(spec));
         }
     }
 }

@@ -26,20 +26,12 @@ namespace Test
         }
 
         [Fact]
-        public void TwoParametrsCreate_ShouldFail()
-        {
-            var res = _appointmentService.CreateAppointment(1,2,"dantist");
-
-            Assert.True(res.IsFailure);
-            Assert.Equal("Need to give one parametr: doctorId or specialization", res.Error);
-        }
-
-        [Fact]
         public void DoctorIsNotExist_ShouldFail()
         {
-            _doctorRepositoryMock.Setup(repository => repository.GetDoctorById(It.IsAny<int>()))
-                .Returns(() => null);
-            var res = _appointmentService.CreateAppointment(1, 2);
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<Doctor>()))
+                .Returns(() => false);
+
+            var res = _appointmentService.CreateAppointment(new User(), new Doctor());
 
             Assert.True(res.IsFailure);
             Assert.Equal("Doctor is not exist", res.Error);
@@ -48,11 +40,13 @@ namespace Test
         [Fact]
         public void UserIsNotExist_ShouldFail()
         {
-            _userRepositoryMock.Setup(repository => repository.IsUserExistByID(It.IsAny<int>()))
+            _userRepositoryMock.Setup(repository => repository.IsUserExists(It.IsAny<User>()))
                 .Returns(() => false);
-            _doctorRepositoryMock.Setup(repository => repository.GetDoctorById(It.IsAny<int>()))
-                .Returns(() => new Doctor());
-            var res = _appointmentService.CreateAppointment(1, 2);
+
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<Doctor>()))
+                .Returns(() => true);
+
+            var res = _appointmentService.CreateAppointment(new User(), new Doctor());
 
             Assert.True(res.IsFailure);
             Assert.Equal("Patient is not exist", res.Error);
@@ -61,13 +55,13 @@ namespace Test
         [Fact]
         public void UserIsNotPatient_ShouldFail()
         {
-            _userRepositoryMock.Setup(repository => repository.IsUserExistByID(It.IsAny<int>()))
+            _userRepositoryMock.Setup(repository => repository.IsUserExists(It.IsAny<User>()))
                 .Returns(() => true);
-            _userRepositoryMock.Setup(repository => repository.GetUserByID(It.IsAny<int>()))
-                .Returns(() => new User(1,"8","Ivan",Role.Administrator,"as","123"));
-            _doctorRepositoryMock.Setup(repository => repository.GetDoctorById(It.IsAny<int>()))
-                .Returns(() => new Doctor());
-            var res = _appointmentService.CreateAppointment(1, 2);
+
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<Doctor>()))
+                .Returns(() => true);
+
+            var res = _appointmentService.CreateAppointment(new User() { Role = Role.Administrator}, new Doctor());
 
             Assert.True(res.IsFailure);
             Assert.Equal("User is not a patient", res.Error);
@@ -76,73 +70,88 @@ namespace Test
         [Fact]
         public void AppointmentAlreadyExist_ShouldFail()
         {
-            List<Appointment> list = new();
-            list.Add(new Appointment());
+            List<Appointment> list = new()
+            {
+                new Appointment()
+                {
+                    StartTime = new DateTime(2000, 5, 1),
+                    EndTime = new DateTime(2001, 5, 1)
+                }
+            };
             IEnumerable<Appointment> en = list;
 
-            _userRepositoryMock.Setup(repository => repository.IsUserExistByID(It.IsAny<int>()))
+            _userRepositoryMock.Setup(repository => repository.IsUserExists(It.IsAny<User>()))
                 .Returns(() => true);
-            _userRepositoryMock.Setup(repository => repository.GetUserByID(It.IsAny<int>()))
-                .Returns(() => new User());
+
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<Doctor>()))
+                .Returns(() => true);
+
             _appointmentRepositoryMock.Setup(repository => repository.IsAppointmentExist(It.IsAny<Appointment>()))
                 .Returns(() => true);
-            _appointmentRepositoryMock.Setup(repository => repository.GetActualDates(It.IsAny<string>()))
+
+            _appointmentRepositoryMock.Setup(repository => repository.GetActualDates(It.IsAny<Doctor>()))
                 .Returns(() => en);
-            _appointmentRepositoryMock.Setup(repository => repository.GetActualDatesByDoctorID(It.IsAny<int>()))
-                .Returns(() => en);
-            _doctorRepositoryMock.Setup(repository => repository.GetDoctorById(It.IsAny<int>()))
-                .Returns(() => new Doctor());
-            var res = _appointmentService.CreateAppointment(1, 2);
+
+            var res = _appointmentService.CreateAppointment(new User(), new Doctor());
 
             Assert.True(res.IsFailure);
             Assert.Equal("Appointment is already exists", res.Error);
         }
 
         [Fact]
-        public void AbstractMakeNote_ShouldFail()
+        public void InvalidTimeMakeNote_ShouldFail()
         {
             List<Appointment> list = new();
             list.Add(new Appointment());
             IEnumerable<Appointment> en = list;
 
-            _userRepositoryMock.Setup(repository => repository.IsUserExistByID(It.IsAny<int>()))
+            _userRepositoryMock.Setup(repository => repository.IsUserExists(It.IsAny<User>()))
                 .Returns(() => true);
-            _userRepositoryMock.Setup(repository => repository.GetUserByID(It.IsAny<int>()))
-                .Returns(() => new User());
+
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<Doctor>()))
+                .Returns(() => true);
+
             _appointmentRepositoryMock.Setup(repository => repository.IsAppointmentExist(It.IsAny<Appointment>()))
                 .Returns(() => false);
-            _appointmentRepositoryMock.Setup(repository => repository.GetActualDates(It.IsAny<string>()))
+
+            _appointmentRepositoryMock.Setup(repository => repository.GetActualDates(It.IsAny<Doctor>()))
                 .Returns(() => en);
-            _appointmentRepositoryMock.Setup(repository => repository.GetActualDatesByDoctorID(It.IsAny<int>()))
-                .Returns(() => en);
-            _doctorRepositoryMock.Setup(repository => repository.GetDoctorById(It.IsAny<int>()))
-                .Returns(() => new Doctor());
-            var res = _appointmentService.CreateAppointment(1, 2);
+
+            var res = _appointmentService.CreateAppointment(new User(), new Doctor());
 
             Assert.True(res.IsFailure);
-            Assert.Equal("Unable to create appointment", res.Error);
+            Assert.Equal("Invalid appointment: Invalid time", res.Error);
         }
 
         [Fact]
         public void SpecIsNotExist_ShouldFail()
         {
-            List<Appointment> list = new();
-            list.Add(new Appointment());
+            List<Appointment> list = new()
+            {
+                new Appointment()
+                {
+                    StartTime = new DateTime(2000, 5, 1),
+                    EndTime = new DateTime(2001, 5, 1)
+                }
+            };
             IEnumerable<Appointment> en = list;
 
-            _userRepositoryMock.Setup(repository => repository.IsUserExistByID(It.IsAny<int>()))
+            _userRepositoryMock.Setup(repository => repository.IsUserExists(It.IsAny<User>()))
                 .Returns(() => true);
-            _userRepositoryMock.Setup(repository => repository.GetUserByID(It.IsAny<int>()))
-                .Returns(() => new User());
+
+            _doctorRepositoryMock.Setup(repository => repository.IsDoctorExists(It.IsAny<Doctor>()))
+                .Returns(() => true);
+
             _appointmentRepositoryMock.Setup(repository => repository.IsAppointmentExist(It.IsAny<Appointment>()))
-                .Returns(() => true);
-            _appointmentRepositoryMock.Setup(repository => repository.GetActualDates(It.IsAny<string>()))
+                .Returns(() => false);
+
+            _appointmentRepositoryMock.Setup(repository => repository.GetActualDates(It.IsAny<Specialization>()))
                 .Returns(() => en);
-            _appointmentRepositoryMock.Setup(repository => repository.GetActualDatesByDoctorID(It.IsAny<int>()))
-                .Returns(() => en);
-            _doctorRepositoryMock.Setup(repository => repository.GetDoctorById(It.IsAny<int>()))
-                .Returns(() => new Doctor());
-            var res = _appointmentService.CreateAppointment(1,-1,"spec");
+
+            _specializationRepositoryMock.Setup(repository => repository.IsSpecializationExists(It.IsAny<Specialization>()))
+                .Returns(() => false);
+
+            var res = _appointmentService.CreateAppointment(new User(), new Specialization());
 
             Assert.True(res.IsFailure);
             Assert.Equal("Specialization is not exist", res.Error);
