@@ -9,8 +9,11 @@ namespace Domain.Logic
 {
     public interface IUserRepository : IRepository<User>
     {
-        bool IsUserExists(string login);
+        bool IsUserExist(string login);
+        bool IsUserExist(User user);
         User? GetUserByLogin(string login);
+        User? GetUserByID(int id);
+        bool IsUserExistByID(int id);
         bool CreateUser(User user);
     }
 }

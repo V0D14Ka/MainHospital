@@ -23,7 +23,7 @@ namespace Domain.UseCases
             if (result.IsFailure)
                 return Result.Fail<User>("Invalid user: " + result.Error);
 
-            if (_db.IsUserExists(user.UserName))
+            if (_db.IsUserExist(user.UserName))
                 return Result.Fail<User>("Username already exists");
 
             return _db.CreateUser(user) ? Result.Ok(user) : Result.Fail<User>("Unable to create user");
@@ -44,7 +44,7 @@ namespace Domain.UseCases
             if (string.IsNullOrEmpty(login))
                 return Result.Fail<bool>("Invalid login");
 
-            return Result.Ok(_db.IsUserExists(login));
+            return Result.Ok(_db.IsUserExist(login));
         }
     }
 }
