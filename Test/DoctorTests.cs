@@ -9,11 +9,13 @@ namespace Test
     {
         private readonly DoctorService _doctorService;
         private readonly Mock<IDoctorRepository> _doctorRepositoryMock;
+        private readonly Mock<ISpecializationRepository> _specRepositoryMock;
 
         public DoctorTests()
         {
             _doctorRepositoryMock = new Mock<IDoctorRepository>();
-            _doctorService = new DoctorService(_doctorRepositoryMock.Object);
+            _specRepositoryMock = new Mock<ISpecializationRepository>();
+            _doctorService = new DoctorService(_doctorRepositoryMock.Object, _specRepositoryMock.Object);
         }
         [Fact]
         public void AbstractGetAll()
@@ -28,7 +30,7 @@ namespace Test
         {
             var res = _doctorService.GetDoctorsBySpecialization(new Specialization());
 
-            Assert.True(!res.IsFailure);
+            Assert.True(res.IsFailure);
         }
 
         [Fact]

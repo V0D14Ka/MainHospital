@@ -59,7 +59,7 @@ namespace Domain.UseCases
             if (patient.Role != Role.Patient)
                 return Result.Fail<Appointment>("User is not a patient");
 
-            if (_dbSpec.IsSpecializationExists(spec) == false)
+            if (_dbSpec.IsSpecializationExist(spec) == false)
                 return Result.Fail<Appointment>("Specialization is not exist");
 
             var date = _db.GetActualDates(spec).First<Appointment>();

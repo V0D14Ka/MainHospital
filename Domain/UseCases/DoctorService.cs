@@ -3,6 +3,7 @@ using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,10 +12,12 @@ namespace Domain.UseCases
     public class DoctorService
     {
         private readonly IDoctorRepository _db;
+        private readonly ISpecializationRepository _dbSpec;
 
-        public DoctorService(IDoctorRepository db)
+        public DoctorService(IDoctorRepository db, ISpecializationRepository db2)
         {
             _db = db;
+            _dbSpec = db2;
         }
 
         public Result<Doctor> CreateDoctor(Doctor doctor)
@@ -54,7 +57,14 @@ namespace Domain.UseCases
 
         public Result<IEnumerable<Doctor>> GetDoctorsBySpecialization(Specialization spec)
         {
-            return Result.Ok(_db.GetDoctorsBySpec(spec));
+            var result = spec.IsValid();
+            if (result.IsFailure)
+                return Result.Fail<IEnumerable<Doctor>>("Invalid specialization: " + result.Error);
+
+            if(_dbSpec.IsSpecializationExist(spec))
+                return Result.Ok(_db.GetDoctorsBySpec(spec));
+
+            return Result.Fail<IEnumerable<Doctor>>("Specialization is not exist");
         }
     }
 }

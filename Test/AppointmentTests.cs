@@ -148,7 +148,7 @@ namespace Test
             _appointmentRepositoryMock.Setup(repository => repository.GetActualDates(It.IsAny<Specialization>()))
                 .Returns(() => en);
 
-            _specializationRepositoryMock.Setup(repository => repository.IsSpecializationExists(It.IsAny<Specialization>()))
+            _specializationRepositoryMock.Setup(repository => repository.IsSpecializationExist(It.IsAny<Specialization>()))
                 .Returns(() => false);
 
             var res = _appointmentService.CreateAppointment(new User(), new Specialization());
