@@ -52,6 +52,10 @@ namespace Domain.UseCases
             return Result.Ok(_db.GetAllDoctors());
         }
 
+        public Result<IEnumerable<Doctor>> GetDoctorsBySpecialization(Specialization spec)
+        {
+            return Result.Ok(_db.GetDoctorsBySpec(spec));
+        }
     }
 }
 

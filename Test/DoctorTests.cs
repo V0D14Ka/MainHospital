@@ -22,6 +22,15 @@ namespace Test
 
             Assert.True(!res.IsFailure);
         }
+
+        [Fact]
+        public void AbstractGetDoctorsBySpec()
+        {
+            var res = _doctorService.GetDoctorsBySpecialization(new Specialization());
+
+            Assert.True(!res.IsFailure);
+        }
+
         [Fact]
         public void AbstractCreate_ShouldFail()
         {
