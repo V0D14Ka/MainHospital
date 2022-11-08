@@ -29,13 +29,13 @@ namespace Domain.UseCases
             if (_db.IsDoctorExist(doctor.Id))
                 return Result.Fail<Doctor>("Doctor is already exists");
 
-            return _db.CreateDoctor(doctor) ? Result.Ok(doctor) : Result.Fail<Doctor>("Unable to create doctor");
+            return _db.Create(doctor) ? Result.Ok(doctor) : Result.Fail<Doctor>("Unable to create doctor");
         }
 
         public Result<Doctor> DeleteDoctor(Doctor doctor)
         {
             if (_db.IsDoctorExist(doctor.Id))
-                return _db.DeleteDoctor(doctor) ? Result.Ok(doctor) : Result.Fail<Doctor>("Unable to delete doctor");
+                return _db.Delete(doctor.Id) ? Result.Ok(doctor) : Result.Fail<Doctor>("Unable to delete doctor");
 
             return Result.Fail<Doctor>("Unable to delete doctor");
         }

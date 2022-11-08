@@ -9,7 +9,6 @@ namespace Domain.Logic
 {
     public interface IAppointmentRepository : IRepository<Appointment>
     {
-        bool MakeNote(Appointment appoint);
         IEnumerable<Appointment> GetActualDates(Specialization spec);
         IEnumerable<Appointment> GetActualDates(Doctor doctor);
         bool IsAppointmentExist(Appointment appointment);

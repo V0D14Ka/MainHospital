@@ -47,7 +47,7 @@ namespace Domain.UseCases
             if (_db.IsAppointmentExist(date))
                 return Result.Fail<Appointment>("Appointment is already exists");
 
-            return _db.MakeNote(date) ? Result.Ok(date) : Result.Fail<Appointment>("Unable to create appointment");
+            return _db.Create(date) ? Result.Ok(date) : Result.Fail<Appointment>("Unable to create appointment");
         }
 
         public Result<Appointment> CreateAppointment(User patient, Specialization spec)
@@ -73,7 +73,7 @@ namespace Domain.UseCases
             if (_db.IsAppointmentExist(date))
                 return Result.Fail<Appointment>("Appointment is already exists");
 
-            return _db.MakeNote(date) ? Result.Ok(date) : Result.Fail<Appointment>("Unable to create appointment");
+            return _db.Create(date) ? Result.Ok(date) : Result.Fail<Appointment>("Unable to create appointment");
         }
 
         public Result<IEnumerable<Appointment>> GetActualDates(Specialization spec)

@@ -25,16 +25,16 @@ namespace Domain.UseCases
             if (result.IsFailure)
                 return Result.Fail<Shedule>("Invalid shedule: " + result.Error);
 
-            return _db.CreateShedule(shedule) ? Result.Ok(shedule) : Result.Fail<Shedule>("Unable to create shedule");
+            return _db.Create(shedule) ? Result.Ok(shedule) : Result.Fail<Shedule>("Unable to create shedule");
         }
 
-        public Result<Shedule> UpdateShedule(Shedule shedule, Shedule updatedShedule)
+        public Result<Shedule> UpdateShedule(Shedule updatedShedule)
         {
             var result = updatedShedule.IsValid();
             if (result.IsFailure)
                 return Result.Fail<Shedule>("Invalid new shedule: " + result.Error);
 
-            return _db.UpdateShedule(shedule, updatedShedule) ? Result.Ok(updatedShedule) : Result.Fail<Shedule>("Unable to update shedule");
+            return _db.Update(updatedShedule) ? Result.Ok(updatedShedule) : Result.Fail<Shedule>("Unable to update shedule");
         }
 
         public Result<Shedule> GetSheduleByDoctorAndDate(Doctor doc, DateTime date)

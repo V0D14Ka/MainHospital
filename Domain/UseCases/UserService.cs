@@ -26,7 +26,7 @@ namespace Domain.UseCases
             if (_db.IsUserExist(user.UserName))
                 return Result.Fail<User>("Username already exists");
 
-            return _db.CreateUser(user) ? Result.Ok(user) : Result.Fail<User>("Unable to create user");
+            return _db.Create(user) ? Result.Ok(user) : Result.Fail<User>("Unable to create user");
         }
 
         public Result<User> GetUserByLogin(string login)

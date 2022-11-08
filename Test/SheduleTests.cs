@@ -31,12 +31,11 @@ namespace Test
         [Fact]
         public void InvalidNewSheduleUpdate_ShouldFail()
         {
-            Shedule shedule = new();
-            Shedule updatedshedule = new()
+            Shedule shedule = new()
             {
                 DoctorId = -1
             };
-            var res = _sheduleService.UpdateShedule(shedule, updatedshedule);
+            var res = _sheduleService.UpdateShedule(shedule);
 
             Assert.True(res.IsFailure);
             Assert.Equal("Invalid new shedule: Invalid id", res.Error);
@@ -45,13 +44,12 @@ namespace Test
         [Fact]
         public void AbstractUpdate_ShouldFail()
         {
-            Shedule shedule = new();
-            Shedule updatedshedule = new()
+            Shedule shedule = new()
             {
                 StartWorking = new DateTime(2000, 5, 1),
                 EndWorking = new DateTime(2001,5,1)
             };
-            var res = _sheduleService.UpdateShedule(shedule, updatedshedule);
+            var res = _sheduleService.UpdateShedule(shedule);
 
             Assert.True(res.IsFailure);
             Assert.Equal("Unable to update shedule", res.Error);

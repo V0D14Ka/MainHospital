@@ -11,8 +11,6 @@ namespace Domain.Logic
     {
         bool IsDoctorExist(int id);
         bool IsDoctorExist(Doctor doctor);
-        bool CreateDoctor(Doctor doctor);
-        bool DeleteDoctor(Doctor doctor);
         Doctor GetDoctorById(int id);
         IEnumerable<Doctor> GetAllDoctors();
         IEnumerable<Doctor> GetDoctorsBySpec(Specialization spec);
