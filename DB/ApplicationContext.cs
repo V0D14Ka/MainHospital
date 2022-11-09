@@ -14,6 +14,9 @@ namespace DB
         /// Поле юзеров. Через него происходит обращение к таблице юзеров в БД
         /// </summary>
         public DbSet<UserModel> Users { get; set; }
+        public DbSet<DoctorModel> Doctors { get; set; }
+        public DbSet<SpecializationModel> Specializations { get; set; }
+        public DbSet<SheduleModel> Shedules { get; set; }
 
         /// <summary>
         /// Это конструктор. Такой параметр нужен, если мы не хотим писать строку

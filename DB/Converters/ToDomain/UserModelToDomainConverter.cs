@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DB.Converters
+namespace DB.Converters.ToDomain
 {
     /// <summary>
     ///  Класс конвертер

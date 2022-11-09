@@ -50,21 +50,21 @@ namespace Domain.UseCases
             return doctor != null ? Result.Ok(doctor) : Result.Fail<Doctor>("Unable to find doctor");
         }
 
-        public Result<IEnumerable<Doctor>> GetAllDoctors()
+        public Result<IEnumerable<Doctor?>> GetAllDoctors()
         {
-            return Result.Ok(_db.GetAllDoctors());
+            return Result.Ok(_db.GetAll());
         }
 
-        public Result<IEnumerable<Doctor>> GetDoctorsBySpecialization(Specialization spec)
+        public Result<IEnumerable<Doctor?>> GetDoctorsBySpecialization(Specialization spec)
         {
             var result = spec.IsValid();
             if (result.IsFailure)
-                return Result.Fail<IEnumerable<Doctor>>("Invalid specialization: " + result.Error);
+                return Result.Fail<IEnumerable<Doctor?>>("Invalid specialization: " + result.Error);
 
             if(_dbSpec.IsSpecializationExist(spec))
                 return Result.Ok(_db.GetDoctorsBySpec(spec));
 
-            return Result.Fail<IEnumerable<Doctor>>("Specialization is not exist");
+            return Result.Fail<IEnumerable<Doctor?>>("Specialization is not exist");
         }
     }
 }

@@ -6,7 +6,6 @@
         public string PhoneNumber;
         public string Name;
         public Role Role;
-
         public string UserName;
         public string Password;
 

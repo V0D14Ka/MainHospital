@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DB.Converters;
+using DB.Converters.FromDomain;
+using DB.Converters.ToDomain;
 using DB.Models;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -52,15 +53,7 @@ namespace DB.Repositories
 
         public bool Create(User user)
         {
-            UserModel newuser = new()
-            {
-                UserName = user.UserName,
-                Id = user.Id,
-                PhoneNumber = user.PhoneNumber,
-                Name = user.Name,
-                Role = user.Role,
-                Password = user.Password,
-            };
+            UserModel? newuser = user.ToUserModel();
             try { _context.Users.Add(newuser);}
             catch { return false; }
             _context.SaveChanges();
@@ -98,10 +91,10 @@ namespace DB.Repositories
             return;
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<User?> GetAll()
         {
-            var user = _context.Users.ToList();
-            IEnumerable<User> users = new List<User>();
+            var _users = _context.Users.ToList();
+            var users = _users.Select(x => x.ToDomain()).ToList();
             return users;
         }
     }
