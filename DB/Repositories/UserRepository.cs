@@ -53,8 +53,7 @@ namespace DB.Repositories
 
         public bool Create(User user)
         {
-            UserModel? newuser = user.ToUserModel();
-            try { _context.Users.Add(newuser);}
+            try { _context.Users.Add(user.ToUserModel());}
             catch { return false; }
             _context.SaveChanges();
             return true;
@@ -74,11 +73,10 @@ namespace DB.Repositories
 
         public bool Update(User user)
         {
-            var newuser = user.ToUserModel();
             var _user = _context.Users.SingleOrDefault(u => u.Id == user.Id);
             if (_user != null)
             {
-                _user = newuser;
+                _user = user.ToUserModel();
                 _context.SaveChanges();
                 return true;
             }
