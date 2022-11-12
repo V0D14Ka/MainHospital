@@ -62,7 +62,8 @@ namespace Domain.UseCases
             if (_dbSpec.IsSpecializationExist(spec) == false)
                 return Result.Fail<Appointment>("Specialization is not exist");
 
-            var date = _db.GetActualDates(spec).First<Appointment>();
+            var date = _db.GetActualDates(spec).First<Appointment?>();
+            if(date == null) return Result.Fail<Appointment>("There are not actual dates");
             date.PatientId = patient.Id;
 
             if (date.IsValid().IsFailure)
@@ -76,7 +77,7 @@ namespace Domain.UseCases
             return _db.Create(date) ? Result.Ok(date) : Result.Fail<Appointment>("Unable to create appointment");
         }
 
-        public Result<IEnumerable<Appointment>> GetActualDates(Specialization spec)
+        public Result<IEnumerable<Appointment?>> GetActualDates(Specialization spec)
         {
             return Result.Ok(_db.GetActualDates(spec));
         }

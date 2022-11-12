@@ -17,6 +17,7 @@ namespace DB
         public DbSet<DoctorModel> Doctors { get; set; }
         public DbSet<SpecializationModel> Specializations { get; set; }
         public DbSet<SheduleModel> Shedules { get; set; }
+        public DbSet<AppointmentModel> Appointments { get; set; }
 
         /// <summary>
         /// Это конструктор. Такой параметр нужен, если мы не хотим писать строку
