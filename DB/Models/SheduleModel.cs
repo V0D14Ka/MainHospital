@@ -8,8 +8,9 @@ namespace DB.Models
 {
     public class SheduleModel
     {
-        public int DoctorId;
-        public DateTime StartWorking;
-        public DateTime EndWorking;
+        public int Id { get; set; }
+        public int DoctorId { get; set; }
+        public DateTime StartWorking { get; set; }
+        public DateTime EndWorking { get; set; }
     }
 }

@@ -9,6 +9,7 @@ namespace Domain.Models
 {
     public class Shedule
     {
+        public int Id { get; set; }
         public int DoctorId { get; set; }
         public DateTime StartWorking;
         public DateTime EndWorking;

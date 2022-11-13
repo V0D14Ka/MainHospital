@@ -8,8 +8,8 @@ namespace DB.Models
 {
     public class DoctorModel
     {
-        public int Id;
-        public string Name;
-        public Specialization Specialization;
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public SpecializationModel Specialization { get; set; }
     }
 }

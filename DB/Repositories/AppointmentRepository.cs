@@ -50,7 +50,6 @@ namespace DB.Repositories
             AppointmentModel? newappointment = appointment.ToAppointmentModel();
             try { _context.Appointments.Add(newappointment); }
             catch { return false; }
-            _context.SaveChanges();
             return true;
         }
 
@@ -60,7 +59,6 @@ namespace DB.Repositories
             if (appoint != null)
             {
                 var flag = _context.Appointments.Remove(appoint);
-                _context.SaveChanges();
                 return true;
             }
             return false;
@@ -68,16 +66,8 @@ namespace DB.Repositories
 
         public bool Update(Appointment appointment)
         {
-            var newappoint = appointment.ToAppointmentModel();
-            var _appoint = _context.Appointments.SingleOrDefault(u => u.PatientId == appointment.PatientId 
-            && u.DoctorId == appointment.DoctorId);
-            if (_appoint != null)
-            {
-                _appoint = newappoint;
-                _context.SaveChanges();
-                return true;
-            }
-            return false;
+            _context.Appointments.Update(appointment.ToAppointmentModel());
+            return true;
         }
 
         public void Save()

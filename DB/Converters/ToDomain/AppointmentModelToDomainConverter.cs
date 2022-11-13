@@ -13,6 +13,7 @@ namespace DB.Converters.ToDomain
         {
             return new Appointment
             {
+                Id = model.Id,
                 DoctorId = model.DoctorId,
                 PatientId = model.PatientId,
                 StartTime = model.StartTime,

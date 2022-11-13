@@ -1,6 +1,7 @@
 ﻿using DB.Converters.FromDomain;
 using DB.Converters.ToDomain;
 using DB.Models;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,6 @@ namespace DB.Repositories
 
         public Shedule? GetSheduleByDoctorAndDate(Doctor doctor, DateTime date)
         {
-            // FirstOrDefault вернет либо одну запись, либо нуль
             var shedule = _context.Shedules.FirstOrDefault(u => u.DoctorId == doctor.Id && u.StartWorking == date);
             return shedule?.ToDomain();
         }
@@ -30,7 +30,6 @@ namespace DB.Repositories
             SheduleModel? newShedule = shedule.ToSheduleModel();
             try { _context.Shedules.Add(newShedule); }
             catch { return false; }
-            _context.SaveChanges();
             return true;
         }
 
@@ -40,7 +39,6 @@ namespace DB.Repositories
             if (shedule != null)
             {
                 var flag = _context.Shedules.Remove(shedule);
-                _context.SaveChanges();
                 return true;
             }
             return false;
@@ -48,15 +46,8 @@ namespace DB.Repositories
 
         public bool Update(Shedule shedule)
         {
-            var newShedule = shedule.ToSheduleModel();
-            var _shedule = _context.Shedules.SingleOrDefault(u => u.DoctorId == shedule.DoctorId);
-            if (_shedule != null)
-            {
-                _shedule = newShedule;
-                _context.SaveChanges();
-                return true;
-            }
-            return false;
+            _context.Shedules.Update(shedule.ToSheduleModel());
+            return true;
         }
 
         public void Save()

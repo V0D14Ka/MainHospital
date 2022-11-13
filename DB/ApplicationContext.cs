@@ -10,31 +10,16 @@ namespace DB
 {
     public class ApplicationContext : DbContext
     {
-        /// <summary>
-        /// Поле юзеров. Через него происходит обращение к таблице юзеров в БД
-        /// </summary>
         public DbSet<UserModel> Users { get; set; }
         public DbSet<DoctorModel> Doctors { get; set; }
         public DbSet<SpecializationModel> Specializations { get; set; }
         public DbSet<SheduleModel> Shedules { get; set; }
         public DbSet<AppointmentModel> Appointments { get; set; }
 
-        /// <summary>
-        /// Это конструктор. Такой параметр нужен, если мы не хотим писать строку
-        /// с адресом и паролем к нашей БД здесь
-        /// </summary>
-        /// <param name="options"></param>
-        public ApplicationContext(DbContextOptions options) : base(options) { }
-
-        /// <summary>
-        /// Конфигурация сущностей в таблицах
-        /// </summary>
+        public ApplicationContext(DbContextOptions options) : base(options) {}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            // В этом методе можно вставлять ограничения или индексы для столбцов БД.
-            // Для примера, мы навесили индекс на столбец логина
             modelBuilder.Entity<UserModel>().HasIndex(model => model.UserName);
         }
     }

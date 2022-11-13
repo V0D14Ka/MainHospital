@@ -15,7 +15,7 @@ namespace DB.Converters.ToDomain
             {
                 Id = model.Id,
                 Name = model.Name,
-                Specialization = model.Specialization
+                Specialization = model.Specialization.ToDomain()
             };
         }
     }

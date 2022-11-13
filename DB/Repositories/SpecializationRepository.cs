@@ -1,6 +1,7 @@
 ﻿using DB.Converters.FromDomain;
 using DB.Converters.ToDomain;
 using DB.Models;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,6 @@ namespace DB.Repositories
 
         public Specialization? GetSpecialization(string name)
         {
-            // FirstOrDefault вернет либо одну запись, либо нуль
             var spec = _context.Specializations.FirstOrDefault(u => u.Name == name);
             return spec?.ToDomain();
         }
@@ -48,7 +48,6 @@ namespace DB.Repositories
             SpecializationModel? newspec = spec.ToSpecModel();
             try { _context.Specializations.Add(newspec); }
             catch { return false; }
-            _context.SaveChanges();
             return true;
         }
 
@@ -58,7 +57,6 @@ namespace DB.Repositories
             if (spec != null)
             {
                 var flag = _context.Specializations.Remove(spec);
-                _context.SaveChanges();
                 return true;
             }
             return false;
@@ -66,15 +64,8 @@ namespace DB.Repositories
 
         public bool Update(Specialization spec)
         {
-            var newspec = spec.ToSpecModel();
-            var _spec = _context.Specializations.SingleOrDefault(u => u.Id == spec.Id);
-            if (_spec != null)
-            {
-                _spec = newspec;
-                _context.SaveChanges();
-                return true;
-            }
-            return false;
+            _context.Specializations.Update(spec.ToSpecModel());
+            return true;
         }
 
         public void Save()

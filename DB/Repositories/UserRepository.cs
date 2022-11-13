@@ -22,7 +22,6 @@ namespace DB.Repositories
 
         public User? GetUserByLogin(string username)
         {
-            // FirstOrDefault вернет либо одну запись, либо нуль
             var user = _context.Users.FirstOrDefault(u => u.UserName == username);
             return user?.ToDomain();
         }
@@ -55,7 +54,6 @@ namespace DB.Repositories
         {
             try { _context.Users.Add(user.ToUserModel());}
             catch { return false; }
-            _context.SaveChanges();
             return true;
         }
 
@@ -65,7 +63,6 @@ namespace DB.Repositories
             if (user != null)
             {
                 var flag = _context.Users.Remove(user);
-                _context.SaveChanges();
                 return true;
             }
             return false;
@@ -73,14 +70,8 @@ namespace DB.Repositories
 
         public bool Update(User user)
         {
-            var _user = _context.Users.SingleOrDefault(u => u.Id == user.Id);
-            if (_user != null)
-            {
-                _user = user.ToUserModel();
-                _context.SaveChanges();
-                return true;
-            }
-            return false;
+            _context.Users.Update(user.ToUserModel());
+            return true;
         }
 
         public void Save()

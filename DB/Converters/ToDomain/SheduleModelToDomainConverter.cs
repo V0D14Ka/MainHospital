@@ -13,6 +13,7 @@ namespace DB.Converters.ToDomain
         {
             return new Shedule
             {
+                Id = model.Id,
                 DoctorId = model.DoctorId,
                 StartWorking = model.StartWorking,
                 EndWorking = model.EndWorking
