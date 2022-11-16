@@ -29,13 +29,13 @@ namespace Domain.UseCases
             if (_db.IsDoctorExist(doctor.Id))
                 return Result.Fail<Doctor>("Doctor is already exists");
 
-            return _db.CreateDoctor(doctor) ? Result.Ok(doctor) : Result.Fail<Doctor>("Unable to create doctor");
+            return _db.Create(doctor) ? Result.Ok(doctor) : Result.Fail<Doctor>("Unable to create doctor");
         }
 
         public Result<Doctor> DeleteDoctor(Doctor doctor)
         {
             if (_db.IsDoctorExist(doctor.Id))
-                return _db.DeleteDoctor(doctor) ? Result.Ok(doctor) : Result.Fail<Doctor>("Unable to delete doctor");
+                return _db.Delete(doctor.Id) ? Result.Ok(doctor) : Result.Fail<Doctor>("Unable to delete doctor");
 
             return Result.Fail<Doctor>("Unable to delete doctor");
         }
@@ -50,21 +50,21 @@ namespace Domain.UseCases
             return doctor != null ? Result.Ok(doctor) : Result.Fail<Doctor>("Unable to find doctor");
         }
 
-        public Result<IEnumerable<Doctor>> GetAllDoctors()
+        public Result<IEnumerable<Doctor?>> GetAllDoctors()
         {
-            return Result.Ok(_db.GetAllDoctors());
+            return Result.Ok(_db.GetAll());
         }
 
-        public Result<IEnumerable<Doctor>> GetDoctorsBySpecialization(Specialization spec)
+        public Result<IEnumerable<Doctor?>> GetDoctorsBySpecialization(Specialization spec)
         {
             var result = spec.IsValid();
             if (result.IsFailure)
-                return Result.Fail<IEnumerable<Doctor>>("Invalid specialization: " + result.Error);
+                return Result.Fail<IEnumerable<Doctor?>>("Invalid specialization: " + result.Error);
 
             if(_dbSpec.IsSpecializationExist(spec))
                 return Result.Ok(_db.GetDoctorsBySpec(spec));
 
-            return Result.Fail<IEnumerable<Doctor>>("Specialization is not exist");
+            return Result.Fail<IEnumerable<Doctor?>>("Specialization is not exist");
         }
     }
 }
