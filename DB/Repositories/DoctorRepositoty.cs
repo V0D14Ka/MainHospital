@@ -3,6 +3,7 @@ using DB.Converters.FromDomain;
 using DB.Converters.ToDomain;
 using DB.Models;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,16 +21,16 @@ namespace DB.Repositories
             _context = context;
         }
 
-        public IEnumerable<Doctor?> GetDoctorsBySpec(Specialization spec)
+        public IEnumerable<Doctor?> GetDoctorsBySpec(int specid)
         {
-            var doctor = _context.Doctors.Where(u => u.Name == spec.Name);
+            var doctor = _context.Doctors.Include(u => u.Specialization).Where(u => u.Specialization.Id == specid);
             var doctors = doctor.Select(x => x.ToDomain()).ToList();
             return doctors;
         }
 
         public Doctor? GetDoctorById(int id)
         {
-            var doctor = _context.Doctors.FirstOrDefault(u => u.Id == id);
+            var doctor = _context.Doctors.Include(u => u.Specialization).FirstOrDefault(u => u.Id == id);
             return doctor?.ToDomain();
         }
 
@@ -47,7 +48,9 @@ namespace DB.Repositories
 
         public bool Create(Doctor doctor)
         {
+            SpecializationModel spec = _context.Specializations.FirstOrDefault(u => u.Id == doctor.Specialization.Id);
             DoctorModel? newdoctor = doctor.ToDoctorModel();
+            newdoctor.Specialization = spec;
             try { _context.Doctors.Add(newdoctor); }
             catch { return false; }
             return true;
@@ -78,7 +81,7 @@ namespace DB.Repositories
 
         public IEnumerable<Doctor?> GetAll()
         {
-            var _doctors = _context.Doctors.ToList();
+            var _doctors = _context.Doctors.Include(u => u.Specialization).ToList();
             var doctors = _doctors.Select(x => x.ToDomain()).ToList();
             return doctors;
         }

@@ -20,7 +20,8 @@ namespace DB
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<UserModel>().HasIndex(model => model.UserName);
+            modelBuilder.Entity<UserModel>().HasIndex(model => model.UserName).IsUnique();
+            modelBuilder.Entity<DoctorModel>().HasIndex(model => model.Name).IsUnique();
         }
     }
 }
