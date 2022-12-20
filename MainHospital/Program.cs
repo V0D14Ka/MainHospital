@@ -15,6 +15,7 @@ builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<UserService>();
 
 builder.Services.AddTransient<ISpecializationRepository, SpecializationRepository>();
+builder.Services.AddTransient<SpecializationService>();
 
 builder.Services.AddTransient<IDoctorRepository, DoctorRepository>();
 builder.Services.AddTransient<DoctorService>();

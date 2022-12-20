@@ -16,7 +16,7 @@ namespace MainHospital.Controllers
         }
 
         [HttpGet("login")]
-        public ActionResult<UserSearchView> GetDoctors()
+        public ActionResult GetDoctors()
         {
 
             var answer = _service.GetAllDoctors();
@@ -27,7 +27,7 @@ namespace MainHospital.Controllers
         }
 
         [HttpGet("login/{id}")]
-        public ActionResult<UserSearchView> GetDoctorByid(int id)
+        public ActionResult GetDoctorByid(int id)
         {
             if (id.ToString() == string.Empty)
                 return Problem(statusCode: 404, detail: "Не указан id");
@@ -39,7 +39,7 @@ namespace MainHospital.Controllers
         }
 
         [HttpGet("spec/{id}")]
-        public ActionResult<UserSearchView> GetDoctorBySpec(int id)
+        public ActionResult GetDoctorBySpec(int id)
         {
             if(id.ToString() == string.Empty)
                 return Problem(statusCode: 404, detail: "Не указан id");
@@ -51,7 +51,7 @@ namespace MainHospital.Controllers
         }
 
         [HttpPost("reg")]
-        public ActionResult<UserSearchView> Register([FromBody] Doctor doctor)
+        public ActionResult Register([FromBody] Doctor doctor)
         {
 
             if (doctor.IsValid().IsFailure)
