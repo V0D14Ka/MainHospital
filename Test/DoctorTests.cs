@@ -28,7 +28,7 @@ namespace Test
         [Fact]
         public void AbstractGetDoctorsBySpec()
         {
-            var res = _doctorService.GetDoctorsBySpecialization(new Specialization());
+            var res = _doctorService.GetDoctorsBySpecialization((new Specialization()).Id);
 
             Assert.True(res.IsFailure);
         }
