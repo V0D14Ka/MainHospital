@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseNpgsql($"Host=localhost;Port=5432;Database=db;Username=postgres;Password=3551"));
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<UserService>();
@@ -19,6 +20,12 @@ builder.Services.AddTransient<SpecializationService>();
 
 builder.Services.AddTransient<IDoctorRepository, DoctorRepository>();
 builder.Services.AddTransient<DoctorService>();
+
+builder.Services.AddTransient<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddTransient<AppointmentService>();
+
+builder.Services.AddTransient<ISheduleRepository, SheduleRepository>();
+builder.Services.AddTransient<SheduleService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

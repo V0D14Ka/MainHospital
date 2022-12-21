@@ -42,11 +42,6 @@ namespace MainHospital.Controllers
         [HttpPost("reg")]
         public ActionResult Register([FromBody] Specialization spec)
         {
-
-            if (spec.IsValid().IsFailure)
-                return Problem(statusCode: 404, detail: spec.IsValid().Error);
-            if(_service.IsSpecExists(spec.Name).Value == true)
-                return Problem(statusCode: 404, detail: "Spec is already exists");
             var userRes = _service.Create(spec);
             if (userRes.IsFailure)
                 return Problem(statusCode: 404, detail: userRes.Error);

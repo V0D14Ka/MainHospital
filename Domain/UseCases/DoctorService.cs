@@ -66,6 +66,14 @@ namespace Domain.UseCases
             return Result.Fail<IEnumerable<Doctor?>>("Specialization is not exist");
         }
 
+        public Result<bool> IsDoctorExists(int id)
+        {
+            if (string.IsNullOrEmpty(id.ToString()))
+                return Result.Fail<bool>("Invalid login");
+
+            return Result.Ok(_db.IsDoctorExist(id));
+        }
+
         public void Save()
         {
             _db.Save();

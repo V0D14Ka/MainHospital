@@ -52,7 +52,7 @@ namespace MainHospital.Controllers
         }
 
         [HttpGet("exist/{login}")]
-        public ActionResult<UserSearchView> IsExist(string login)
+        public ActionResult IsExist(string login)
         {
 
             if (login == string.Empty)
@@ -66,12 +66,8 @@ namespace MainHospital.Controllers
         }
 
         [HttpPost("reg")]
-        public ActionResult<UserSearchView> Register([FromBody] User user)
+        public ActionResult Register([FromBody] User user)
         {
-
-            if (user.IsValid().IsFailure)
-                return Problem(statusCode: 404, detail: user.IsValid().Error);
-
             var userRes = _service.Register(user);
             if (userRes.IsFailure)
                 return Problem(statusCode: 404, detail: userRes.Error);

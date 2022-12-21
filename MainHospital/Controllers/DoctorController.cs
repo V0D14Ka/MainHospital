@@ -7,7 +7,7 @@ namespace MainHospital.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class DoctorController : Controller
+    public class DoctorController : ControllerBase
     {
         private readonly DoctorService _service;
         public DoctorController(DoctorService service)
@@ -53,10 +53,6 @@ namespace MainHospital.Controllers
         [HttpPost("reg")]
         public ActionResult Register([FromBody] Doctor doctor)
         {
-
-            if (doctor.IsValid().IsFailure)
-                return Problem(statusCode: 404, detail: doctor.IsValid().Error);
-
             var userRes = _service.CreateDoctor(doctor);
             if (userRes.IsFailure)
                 return Problem(statusCode: 404, detail: userRes.Error);
