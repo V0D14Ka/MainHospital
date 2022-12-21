@@ -26,6 +26,7 @@ namespace Domain.UseCases
             if (_db.IsUserExist(user.UserName))
                 return Result.Fail<User>("Username already exists");
 
+
             return _db.Create(user) ? Result.Ok(user) : Result.Fail<User>("Unable to create user");
         }
 
@@ -39,12 +40,27 @@ namespace Domain.UseCases
             return user != null ? Result.Ok(user) : Result.Fail<User>("Unable to find user");
         }
 
+        public Result<User> GetUserById(int id)
+        {
+            if (string.IsNullOrEmpty(id.ToString()))
+                return Result.Fail<User>("Invalid id");
+
+            var user = _db.GetUserByID(id);
+
+            return user != null ? Result.Ok(user) : Result.Fail<User>("Unable to find user");
+        }
+
         public Result<bool> IsUserExists(string login)
         {
             if (string.IsNullOrEmpty(login))
                 return Result.Fail<bool>("Invalid login");
 
             return Result.Ok(_db.IsUserExist(login));
+        }
+
+        public void Save()
+        {
+            _db.Save();
         }
     }
 }

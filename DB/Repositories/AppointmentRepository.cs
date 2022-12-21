@@ -48,8 +48,10 @@ namespace DB.Repositories
         public bool Create( Appointment appointment)
         {
             AppointmentModel? newappointment = appointment.ToAppointmentModel();
-            try { _context.Appointments.Add(newappointment); }
-            catch { return false; }
+            var gg = _context.Appointments.FirstOrDefault(_x => _x.DoctorId == appointment.DoctorId);
+            gg.PatientId = appointment.PatientId;
+            _context.Appointments.Update(gg);
+            _context.SaveChanges();
             return true;
         }
 

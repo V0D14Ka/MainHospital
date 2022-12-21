@@ -55,16 +55,28 @@ namespace Domain.UseCases
             return Result.Ok(_db.GetAll());
         }
 
-        public Result<IEnumerable<Doctor?>> GetDoctorsBySpecialization(Specialization spec)
+        public Result<IEnumerable<Doctor?>> GetDoctorsBySpecialization(int specid)
         {
-            var result = spec.IsValid();
-            if (result.IsFailure)
-                return Result.Fail<IEnumerable<Doctor?>>("Invalid specialization: " + result.Error);
+            if (specid.ToString() == string.Empty)
+                return Result.Fail<IEnumerable<Doctor?>>("Invalid specialization id");
 
-            if(_dbSpec.IsSpecializationExist(spec))
-                return Result.Ok(_db.GetDoctorsBySpec(spec));
+            if (_dbSpec.IsSpecializationExistById(specid))
+                return Result.Ok(_db.GetDoctorsBySpec(specid));
 
             return Result.Fail<IEnumerable<Doctor?>>("Specialization is not exist");
+        }
+
+        public Result<bool> IsDoctorExists(int id)
+        {
+            if (string.IsNullOrEmpty(id.ToString()))
+                return Result.Fail<bool>("Invalid login");
+
+            return Result.Ok(_db.IsDoctorExist(id));
+        }
+
+        public void Save()
+        {
+            _db.Save();
         }
     }
 }

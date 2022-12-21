@@ -45,5 +45,17 @@ namespace Domain.UseCases
 
             return shed != null ? Result.Ok(shed) : Result.Fail<Shedule>("Unable to find shedule");
         }
+
+        public Result<IEnumerable<Shedule?>> GetAll()
+        {
+            var shed = _db.GetAll();
+
+            return shed != null ? Result.Ok(shed) : Result.Fail<IEnumerable<Shedule?>>("Unable to find shedules");
+        }
+
+        public void Save()
+        {
+            _db.Save();
+        }
     }
 }
