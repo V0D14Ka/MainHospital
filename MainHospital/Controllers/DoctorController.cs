@@ -15,7 +15,7 @@ namespace MainHospital.Controllers
             _service = service;
         }
 
-        [HttpGet("login")]
+        [HttpGet("get")]
         public ActionResult GetDoctors()
         {
 
@@ -26,7 +26,7 @@ namespace MainHospital.Controllers
             return Ok(answer.Value);
         }
 
-        [HttpGet("login/{id}")]
+        [HttpGet("id/{id}")]
         public ActionResult GetDoctorByid(int id)
         {
             if (id.ToString() == string.Empty)
@@ -48,6 +48,18 @@ namespace MainHospital.Controllers
                 return Problem(statusCode: 404, detail: answer.Error);
 
             return Ok(answer.Value);
+        }
+
+        [HttpGet("exist/{id}")]
+        public ActionResult IsExists(int id)
+        {
+            if (id.ToString() == string.Empty)
+                return Problem(statusCode: 404, detail: "Не указан id");
+            var answer = _service.IsDoctorExists(id);
+            if (answer.IsFailure)
+                return Problem(statusCode: 404, detail: answer.Error);
+
+            return Ok(new { IsExists = answer.Value });
         }
 
         [HttpPost("reg")]

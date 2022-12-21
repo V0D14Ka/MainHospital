@@ -38,6 +38,18 @@ namespace MainHospital.Controllers
             return Ok(answer.Value);
         }
 
+        [HttpGet("exist/{name}")]
+        public ActionResult IsExists(string name)
+        {
+            if (name == string.Empty)
+                return Problem(statusCode: 404, detail: "Не указан id");
+            var answer = _service.IsSpecExists(name);
+            if (answer.IsFailure)
+                return Problem(statusCode: 404, detail: answer.Error);
+
+            return Ok(new { IsExists = answer.Value });
+        }
+
 
         [HttpPost("reg")]
         public ActionResult Register([FromBody] Specialization spec)

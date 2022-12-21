@@ -27,7 +27,7 @@ namespace MainHospital.Controllers
             return Ok(answer.Value);
         }
 
-        [HttpPost("getDD")]
+        [HttpPost("get_dd")]
         public ActionResult<SheduleSearchView> GetByDoctorAndDate([FromBody] SheduleSearch search)
         {
             
