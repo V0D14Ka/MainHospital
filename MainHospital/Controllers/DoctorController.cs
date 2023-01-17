@@ -1,6 +1,7 @@
 ﻿using Domain.Models;
 using Domain.UseCases;
 using MainHospital.Views;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MainHospital.Controllers
@@ -62,6 +63,7 @@ namespace MainHospital.Controllers
             return Ok(new { IsExists = answer.Value });
         }
 
+        [Authorize]
         [HttpPost("reg")]
         public ActionResult Register([FromBody] Doctor doctor)
         {

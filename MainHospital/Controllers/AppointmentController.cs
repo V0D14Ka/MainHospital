@@ -2,6 +2,7 @@
 using Domain.UseCases;
 using MainHospital.ExtraModels;
 using MainHospital.Views;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Numerics;
 
@@ -32,6 +33,7 @@ namespace MainHospital.Controllers
             return Ok(answer.Value);
         }
 
+        [Authorize]
         [HttpPost("reg")]
         public ActionResult Register([FromBody] AppointmentCreate app)
         {
