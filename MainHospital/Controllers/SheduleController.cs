@@ -2,6 +2,7 @@
 using Domain.UseCases;
 using MainHospital.SearchModels;
 using MainHospital.Views;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MainHospital.Controllers
@@ -49,6 +50,8 @@ namespace MainHospital.Controllers
             });
         }
 
+
+        [Authorize]
         [HttpPost("reg")]
         public ActionResult Register([FromBody] Shedule shed)
         {

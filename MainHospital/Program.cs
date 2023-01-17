@@ -3,6 +3,10 @@ using DB;
 using Domain.Logic;
 using Domain.UseCases;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using MainHospital.Token;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +35,37 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+  .AddJwtBearer(options =>
+  {
+      options.RequireHttpsMetadata = false;
+      options.TokenValidationParameters = new TokenValidationParameters
+      {
+          ValidateIssuer = true,
+          ValidIssuer = AuthOptions.ISSUER,
+          ValidateAudience = true,
+          ValidAudience = AuthOptions.AUDIENCE,
+          ValidateLifetime = true,
+          IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+          ValidateIssuerSigningKey = true,
+      };
+  });
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddSwaggerGen(opt =>
+{
+    opt.SwaggerDoc("v1", new OpenApiInfo { Title = "My Api", Version = "v1" });
+    opt.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Scheme = "bearer"
+    });
+    opt.OperationFilter<AuthenticationRequirementsOperationFilter>();
+});
+
 
 var app = builder.Build();
 

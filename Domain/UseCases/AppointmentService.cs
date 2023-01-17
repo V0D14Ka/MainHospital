@@ -16,6 +16,8 @@ namespace Domain.UseCases
         private readonly IUserRepository _dbUser;
         private readonly ISpecializationRepository _dbSpec;
 
+        private readonly Dictionary<int, Mutex> mute = new();
+
         public AppointmentService(IAppointmentRepository db, IDoctorRepository dbDoctor, IUserRepository dbUser, ISpecializationRepository dbSpec)
         {
             _db = db;
@@ -47,7 +49,19 @@ namespace Domain.UseCases
             if (_db.IsAppointmentExist(date))
                 return Result.Fail<Appointment>("Appointment is already exists");
 
-            return _db.Create(date) ? Result.Ok(date) : Result.Fail<Appointment>("Unable to create appointment");
+            if (mute.ContainsKey(date.DoctorId))
+                mute.Add(date.DoctorId, new Mutex());
+            mute.First(d => d.Key == date.DoctorId).Value.WaitOne();
+
+            if (!_db.Create(date))
+            {
+                mute.First(d => d.Key == date.DoctorId).Value.ReleaseMutex();
+                return Result.Fail<Appointment>("Unable to create appointment");
+            }
+
+            _db.Save();
+            mute.First(d => d.Key == date.DoctorId).Value.ReleaseMutex();
+            return Result.Ok(date);
         }
 
         public Result<Appointment> CreateAppointment(User patient, Specialization spec)
@@ -71,10 +85,19 @@ namespace Domain.UseCases
                 return Result.Fail<Appointment>("Invalid appointment: " + date.IsValid().Error);
             }
 
-            if (_db.IsAppointmentExist(date))
-                return Result.Fail<Appointment>("Appointment is already exists");
+            if (!mute.ContainsKey(date.DoctorId))
+                mute.Add(date.DoctorId, new Mutex());
+            mute.First(d => d.Key == date.DoctorId).Value.WaitOne();
 
-            return _db.Create(date) ? Result.Ok(date) : Result.Fail<Appointment>("Unable to create appointment");
+            if (!_db.Create(date))
+            {
+                mute.First(d => d.Key == date.DoctorId).Value.ReleaseMutex();
+                return Result.Fail<Appointment>("Unable to create appointment");
+            }
+
+            _db.Save();
+            mute.First(d => d.Key == date.DoctorId).Value.ReleaseMutex();
+            return Result.Ok(date);
         }
 
         public Result<IEnumerable<Appointment?>> GetActualDates(Specialization spec)
